@@ -1,8 +1,17 @@
 $ticker = "005930"
 
-# 2019년부터 2025년까지 반복 실행
 foreach ($year in 2019..2025) {
     Write-Output "[$year] Crawler Running..."
     python -m Collection.Crawler.Stock.crawling -t $ticker -y $year
+    Write-Output "[$year] Ended."
+}
+
+Write-Output "Preprocessing..."
+python -m Collection.Preprocess.News.process_body
+Write-Output "Preprocessing Ended"
+
+foreach ($year in 2019..2025) {
+    Write-Output "[$year] Embedding Started..."
+    python -m Collection.Embeddings.get_embeddings -t $ticker -y $year
     Write-Output "[$year] Ended."
 }
