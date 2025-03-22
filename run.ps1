@@ -1,3 +1,5 @@
+# powershell.exe -ExecutionPolicy Bypass -File .\run.ps1
+
 $ticker = "005930"
 
 foreach ($year in 2019..2025) {
