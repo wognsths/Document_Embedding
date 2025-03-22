@@ -8,6 +8,8 @@ foreach ($year in 2019..2025) {
     Write-Output "[$year] Ended."
 }
 
+python -m Collection.Crawler.Stock.section_crawler
+
 Write-Output "Preprocessing..."
 python -m Collection.Preprocess.News.process_body
 Write-Output "Preprocessing Ended"

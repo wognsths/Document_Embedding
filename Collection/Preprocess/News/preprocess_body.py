@@ -15,6 +15,7 @@ def main():
     for file in tqdm(file_list, desc="Processing files"):
         print(f"Processing file: {file}")
         df = pd.read_csv(file, encoding="utf-8")
+        df.drop_duplicates(subset=["Link", "Title"], inplace=True)
         
         df["Title"] = df["Title"].apply(convert_hanja)
         df["Body"] = df["Body"].apply(convert_hanja)
