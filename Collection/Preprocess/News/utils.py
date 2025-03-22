@@ -11,7 +11,8 @@ def categorize_document(text):
         "부고": r"^\[부고\]",
         "속보": r"^\[속보\]",
         "단독": r"^\[단독\]",
-        "인터뷰": r"\[인터뷰\]"
+        "인터뷰": r"\[인터뷰\]",
+        "영상": r"\[영상\]"
     }
     if not isinstance(text, str):
         return "NotText"

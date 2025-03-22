@@ -42,11 +42,21 @@ def main():
         print(f"\nProcessing file: {file}")
         df = pd.read_csv(file, encoding="utf-8")
 
+        # Section 컬럼이 없으면 미리 추가
+        if "Section" not in df.columns:
+            df["Section"] = None
+
         driver = start_browser(driver_path)
 
-        for idx, row in tqdm(df.iterrows(), total=len(df)):
-            df.loc[idx, "Section"] = None
+        # enumerate(df.iterrows()) -> (순번, (인덱스, Series))
+        for idx, (row_idx, row) in tqdm(enumerate(df.iterrows()), total=len(df)):
 
+            # 이미 Section에 값이 있다면(=이미 처리됨) 스킵
+            # pd.notna(row["Section"])로도 체크 가능
+            if not pd.isna(row["Section"]):
+                continue
+
+            # Link가 NaN이면 스킵
             if pd.isna(row["Link"]):
                 continue
 
@@ -56,17 +66,22 @@ def main():
                 categories = WebDriverWait(driver, 2).until(
                     EC.presence_of_all_elements_located((By.CSS_SELECTOR, ".media_end_categorize_item"))
                 )
-
                 cat_texts = [cat.text.strip() for cat in categories if cat.text.strip()]
-                
+
                 if cat_texts:
-                    df.loc[idx, "Section"] = "/".join(cat_texts)
+                    df.loc[row_idx, "Section"] = "/".join(cat_texts)
                 else:
-                    df.loc[idx, "Section"] = None
+                    df.loc[row_idx, "Section"] = None
 
-            except Exception as e:
-                df.loc[idx, "Section"] = None
+            except Exception:
+                df.loc[row_idx, "Section"] = None
 
+            # 100개 단위로 중간 저장
+            if (idx + 1) % 100 == 0:
+                df.to_csv(file, index=False, encoding="utf-8")
+                print(f"Saved partial results for first {idx + 1} rows.")
+
+        # 모든 처리 완료 후 최종 저장
         df.to_csv(file, index=False, encoding="utf-8")
         driver.quit()
 

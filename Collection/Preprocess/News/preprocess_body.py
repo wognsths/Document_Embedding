@@ -20,7 +20,7 @@ def main():
         df["Title"] = df["Title"].apply(convert_hanja)
         df["Body"] = df["Body"].apply(convert_hanja)
         
-        df["Category1"] = (df["Title"] + df["Body"]).apply(categorize_document)
+        df["Category"] = (df["Title"] + df["Body"]).apply(categorize_document)
         
         df["Body"] = df["Body"].apply(process_body)
         df["Body"] = df["Body"].apply(remove_special_characters)
