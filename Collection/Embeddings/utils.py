@@ -39,7 +39,7 @@ def make_batch(df, output_dir, batch_size, year):
         batch_key = f"Batch_{str(i // batch_size).zfill(3)}"
         batch_dict[batch_key] = valid_ids[i:i+batch_size]
     
-    output_file = os.path.join(output_dir, f"./Collection/Embeddings/Info/batches_info_{year}.json")
+    output_file = f"./Collection/Embeddings/Info/batches_info_{year}.json"
     with open(output_file, "w", encoding="utf-8") as f:
         json.dump(batch_dict, f, ensure_ascii=False, indent=4)
     

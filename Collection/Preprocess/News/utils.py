@@ -45,15 +45,18 @@ def remove_special_characters(text):
 def process_body(text):
     if not isinstance(text, str):
         return text
+
     lines = text.split("\n")
-    lines = [line for line in lines if "ⓒ" not in line]                            # Copyright
-    lines = [line for line in lines if "@" not in line]                             # Email
-    lines = [line for line in lines if not re.search(r"(\s기자\s|기자$)", line)]     # Reporter
-    lines = [line for line in lines if not re.search(r"/\s*[가-힣]+\s*기자$", line)] # Reporter
-    
+    lines = [line for line in lines if "ⓒ" not in line]
+    lines = [line for line in lines if "@" not in line]
     text = "\n".join(lines)
+
     text = re.sub(r"\[.*?\]", "", text)
 
+    text = re.sub(r'\d{4}[.-]?\d{1,2}[.-]?\d{1,2}', '', text)
+    
+    text = re.sub(r'\b[가-힣]{2,4}\s*기자\b', '', text)
+    
     remove_patterns = [
         r"▶.*",
         r"☞.*",
@@ -73,5 +76,8 @@ def process_body(text):
     for pattern in remove_patterns:
         text = re.sub(pattern, "", text)
     
-    return text
+    paragraphs = re.split(r'\n{1,}', text)
+    paragraphs = [p for p in paragraphs if p.strip().endswith('.')]
+    text = "\n\n".join(paragraphs)
 
+    return text

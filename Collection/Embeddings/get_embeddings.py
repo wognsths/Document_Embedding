@@ -24,7 +24,7 @@ def main():
     df = load_data(input_file)
     
     # 2. Set batch JSON file path and create/load it
-    batch_json_path = os.path.join(output_dir, f"./Collection/Embeddings/Info/batches_info_{year}.json")
+    batch_json_path = os.path.join(os.curdir, f"./Collection/Embeddings/Info/batches_info_{year}.json")
     if not os.path.exists(batch_json_path):
         print("Batch JSON not found. Creating new batch JSON...")
         make_batch(df, output_dir, batch_size=20, year=year)

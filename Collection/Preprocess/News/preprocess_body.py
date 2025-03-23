@@ -15,7 +15,8 @@ def main():
     for file in tqdm(file_list, desc="Processing files"):
         print(f"Processing file: {file}")
         df = pd.read_csv(file, encoding="utf-8")
-        df.drop_duplicates(subset=["Link", "Title"], inplace=True)
+        df.drop_duplicates(subset=["Link"], inplace=True)
+        df["Ignore"] = 0
         
         df["Title"] = df["Title"].apply(convert_hanja)
         df["Body"] = df["Body"].apply(convert_hanja)
@@ -26,6 +27,8 @@ def main():
         df["Body"] = df["Body"].apply(remove_special_characters)
         
         df["ID"] = df["Date"].astype(str) + "_" + (df.groupby("Date").cumcount() + 1).astype(str).str.zfill(3)
+
+        df.loc[df["Body"].isna(), "Ignore"] = 1
         
         output_file = os.path.join(processed_dir, os.path.basename(file))
         df.to_csv(output_file, index=False, encoding="utf-8")
