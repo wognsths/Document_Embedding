@@ -5,6 +5,8 @@ import hdbscan
 import json
 import os
 
+
+# Depreciated
 def get_reference(ref_N: int, file_dir: str):
     with open(f"{file_dir}/reference_{ref_N}.json") as f:
         reference = json.load(f)
