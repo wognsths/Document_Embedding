@@ -1,3 +1,25 @@
 댓글 수로 비교해보면 어떨까...??
 
 댓글 수 상위 N vs 댓글 수 하위 N 키워드
+
+삼성전자랑 가까운 키워드가 무엇이 있을까~ 고민!
+
+
+from transformers import AutoTokenizer, AutoModelForSequenceClassification
+import torch
+
+# KB-BERT 또는 KoFinBERT 모델 로드
+tokenizer = AutoTokenizer.from_pretrained("snunlp/KR-FinBert-SC")
+model = AutoModelForSequenceClassification.from_pretrained("snunlp/KR-FinBert-SC")
+
+def classify_news(title, content):
+    text = title + " " + content
+    inputs = tokenizer(text, return_tensors="pt", truncation=True, max_length=512)
+    outputs = model(**inputs)
+    probabilities = torch.softmax(outputs.logits, dim=1)
+    return probabilities.detach().numpy()[0]
+
+
+Title + Keyword + Finbert score 
+or
+(Title => keyword) => embedding + Finbert score -> Classification labeling or Cluster?

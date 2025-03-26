@@ -3,7 +3,6 @@ from Analysis.Cluster.cluster import *
 
 import warnings
 
-
 warnings.simplefilter(action='ignore', category=FutureWarning)
 
 def create_parser() -> ArgumentParser:

@@ -8,7 +8,7 @@ from tqdm import tqdm
 def create_parser() -> ArgumentParser:
     parser = ArgumentParser()
     parser.add_argument('-o', '--output_dir', type=str, required=False)
-    parser.add_argument('-t', '--ticker_code', type=str, required=True, choices=TickerDict.keys())
+    parser.add_argument('-t', '--ticker_code', type=str, requaired=True, choices=TickerDict.keys())
     parser.add_argument('-y', '--year', type=str, required=True)
     return parser
 
