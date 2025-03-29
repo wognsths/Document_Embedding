@@ -37,6 +37,7 @@ def main():
     base_dir = "./Data/News/Raw"
     files = [os.path.join(base_dir, file) for file in os.listdir(base_dir) 
              if file.endswith(".csv")]
+    # 귀찮겠지만 여기서 .csv 대신 _2019.csv로...
     driver_path = "./chromedriver"
 
     for file in files:
