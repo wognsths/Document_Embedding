@@ -16,7 +16,7 @@ def start_browser(driver_path):
     chrome_options = Options()
     chrome_options.add_argument('--disable-blink-features=AutomationControlled')
     chrome_options.add_argument('--start-maximized')
-    # chrome_options.add_argument('--headless')
+    chrome_options.add_argument('--headless')
     try:
         if driver_path and os.path.exists(driver_path):
             driver = webdriver.Chrome(
@@ -64,18 +64,17 @@ def main():
             driver.get(row["Link"])
 
             try:
-                button = WebDriverWait(driver, 2).until(
+                button = WebDriverWait(driver, 0.3).until(
                     EC.element_to_be_clickable((By.CSS_SELECTOR, "a.media_end_head_autosummary_button._toggle_btn._SUMMARY_BTN"))
                 )
                 button.click()
 
-                summary_div = WebDriverWait(driver, 2).until(
+                summary_div = WebDriverWait(driver, 1).until(
                     EC.visibility_of_element_located(
                         (By.CSS_SELECTOR, "div._contents_body._SUMMARY_CONTENT_BODY")
                     )
                 )
                 summary_text = summary_div.text.strip()
-                print(summary_text)
 
                 df.loc[row_idx, "Summarization"] = summary_text
             
